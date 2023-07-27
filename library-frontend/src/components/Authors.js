@@ -1,22 +1,25 @@
 import { useState, useEffect } from 'react'
 import { useMutation } from '@apollo/client'
+import Select from 'react-select'
 
 import { EDIT_AUTHOR } from '../queries'
 
-const AuthorForm = ({ setError }) => {
-    const [name, setName] = useState('')
+const AuthorForm = ({ authors, setError }) => {
     const [born, setBorn] = useState('')
+    const [selectedName, setSelectedName] = useState(null)
 
     const [changeBorn, result] = useMutation(EDIT_AUTHOR)
+
+    const options = authors.map((a) => ({ value: a.name, label: a.name }))
 
     const submit = async (event) => {
         event.preventDefault()
 
         changeBorn({
-            variables: { name, born: Number(born) },
+            variables: { name: selectedName.value, born: Number(born) },
         })
 
-        setName('')
+        setSelectedName(null)
         setBorn('')
     }
 
@@ -30,13 +33,11 @@ const AuthorForm = ({ setError }) => {
         <div>
             <h3>Set birthyear</h3>
             <form onSubmit={submit}>
-                <div>
-                    name
-                    <input
-                        value={name}
-                        onChange={({ target }) => setName(target.value)}
-                    />
-                </div>
+                <Select
+                    defaultValue={selectedName}
+                    onChange={setSelectedName}
+                    options={options}
+                />
                 <div>
                     born
                     <input
@@ -75,7 +76,7 @@ const Authors = ({ show, authors, setError }) => {
                     ))}
                 </tbody>
             </table>
-            <AuthorForm setError={setError} />
+            <AuthorForm authors={authors} setError={setError} />
         </div>
     )
 }
