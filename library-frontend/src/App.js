@@ -35,6 +35,7 @@ const App = () => {
             <Authors
                 show={page === 'authors'}
                 authors={result.data.allAuthors}
+                setError={notify}
             />
 
             <Books show={page === 'books'} />
