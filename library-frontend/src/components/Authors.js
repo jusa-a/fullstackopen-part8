@@ -4,7 +4,7 @@ import Select from 'react-select'
 
 import { EDIT_AUTHOR } from '../queries'
 
-const AuthorForm = ({ authors, setError }) => {
+const AuthorForm = ({ authors, token, setError }) => {
     const [born, setBorn] = useState('')
     const [selectedName, setSelectedName] = useState(null)
 
@@ -29,6 +29,10 @@ const AuthorForm = ({ authors, setError }) => {
         }
     }, [result.data]) // eslint-disable-line
 
+    if (!token) {
+        return null
+    }
+
     return (
         <div>
             <h3>Set birthyear</h3>
@@ -52,7 +56,7 @@ const AuthorForm = ({ authors, setError }) => {
     )
 }
 
-const Authors = ({ show, authors, setError }) => {
+const Authors = ({ show, token, authors, setError }) => {
     if (!show) {
         return null
     }
@@ -76,7 +80,7 @@ const Authors = ({ show, authors, setError }) => {
                     ))}
                 </tbody>
             </table>
-            <AuthorForm authors={authors} setError={setError} />
+            <AuthorForm authors={authors} token={token} setError={setError} />
         </div>
     )
 }
