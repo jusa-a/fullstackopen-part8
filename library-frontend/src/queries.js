@@ -15,12 +15,22 @@ export const ALL_BOOKS = gql`
     query {
         allBooks {
             title
+            genres
             author {
                 name
                 born
             }
             published
             id
+        }
+    }
+`
+
+export const ME = gql`
+    query {
+        me {
+            username
+            favoriteGenre
         }
     }
 `
